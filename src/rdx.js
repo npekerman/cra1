@@ -12,16 +12,27 @@ const persons = [{
     lut: new Date()
 }]
 
-const addPerson = ({name,lname}) => {
-  return  {
+const addPerson = ({ name, lname }) => {
+    return {
         type: 'PERSON_ADD',
         person: {
-            id:uuidv4(),
-            lut:new Date(),
+            id: uuidv4(),
+            lut: new Date(),
             name,
             lname
         }
     }
+}
+
+const editPerson = (id, person) => ({
+    type: 'PERSON_EDIT',
+    id,
+    person
+})
+
+const removePerson = id => {
+    type: 'REMOVE_PERSON',
+        id
 }
 
 const dbStore =
@@ -29,13 +40,13 @@ const dbStore =
         switch (action.type) {
             case 'PERSON_ADD':
                 return {
-                    ents:[
-                    ...persons,
-                    action.person]
+                    ents: [
+                        ...persons,
+                        action.person]
                 }
                 break;
             default:
-        return state
+                return state
                 break;
         }
     }
@@ -55,9 +66,9 @@ store.subscribe(() => {
     console.log(store.getState())
 })
 
-const {person:{id}} = store.dispatch(addPerson({
-    name:'natan',
-    lname:'pekerman'
+const { person: { id } } = store.dispatch(addPerson({
+    name: 'natan',
+    lname: 'pekerman'
 }))
 
 // let {person:{id}} = state
