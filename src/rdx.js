@@ -30,24 +30,28 @@ const editPerson = (id, person) => ({
     person
 })
 
-const removePerson = id => {
-    type: 'REMOVE_PERSON',
-        id
-}
+const removePerson = (id) => ({
+    type: 'PERSON_REMOVE',
+    id
+})
+
+const handleRemovePerson = ({ents}},id) => (
+    ents.filter((p)=>(id !== p.id))
+)
 
 const dbStore =
     (state = { ents: persons }, action) => {
         switch (action.type) {
-            case 'PERSON_ADD':
+            case 'PERSON_ADD': 
                 return {
                     ents: [
                         ...persons,
                         action.person]
                 }
-                break;
+            case 'PERSON_REMOVE':
+                return handleRemovePerson(action.id,state.ents)
             default:
                 return state
-                break;
         }
     }
 
@@ -66,11 +70,12 @@ store.subscribe(() => {
     console.log(store.getState())
 })
 
-const { person: { id } } = store.dispatch(addPerson({
+const { person: { id: a } } = store.dispatch(addPerson({
     name: 'natan',
     lname: 'pekerman'
 }))
 
 // let {person:{id}} = state
 
-console.log(id)
+console.log(a)
+store.dispatch(removePerson(a))
